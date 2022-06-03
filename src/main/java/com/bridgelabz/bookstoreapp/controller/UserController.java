@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+
 @RestController
 @RequestMapping("/bookstoreApi")
 public class UserController {
@@ -41,6 +43,16 @@ public class UserController {
                 subject,
                 body);
         ResponseDTO responseDTO = new ResponseDTO("Sent Email Successfully",toEmail);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
+    @GetMapping("/emailAttached")
+    public ResponseEntity<ResponseDTO> sendEmailWithAttachment() throws MessagingException {
+        senderService.sendEmailWithAttachment("karthikmc007@gmail.com",
+                "This is subject",
+                "Hai Karthik Benki find the attachment below",
+                "C:\\Users\\karth\\Downloads\\download.jpg");
+        ResponseDTO responseDTO = new ResponseDTO("Sent Email Successfully","toEmail");
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
