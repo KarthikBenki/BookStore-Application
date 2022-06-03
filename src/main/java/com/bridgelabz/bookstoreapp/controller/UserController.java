@@ -1,16 +1,17 @@
 package com.bridgelabz.bookstoreapp.controller;
 
 import com.bridgelabz.bookstoreapp.dto.ResponseDTO;
+import com.bridgelabz.bookstoreapp.dto.UserDTO;
+import com.bridgelabz.bookstoreapp.entity.UserData;
 import com.bridgelabz.bookstoreapp.service.EmailSenderService;
+import com.bridgelabz.bookstoreapp.service.IUserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/bookstoreApi")
@@ -20,6 +21,9 @@ public class UserController {
 
     @Autowired
     private EmailSenderService senderService;
+
+    @Autowired
+    private IUserRegistrationService userRegistrationService;
 
     /**
      * @Purpose Testing the Api
@@ -46,6 +50,11 @@ public class UserController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
+    /**
+     *
+     * @return status of email
+     * @throws MessagingException
+     */
     @GetMapping("/emailAttached")
     public ResponseEntity<ResponseDTO> sendEmailWithAttachment() throws MessagingException {
         senderService.sendEmailWithAttachment("karthikmc007@gmail.com",
@@ -54,6 +63,19 @@ public class UserController {
                 "C:\\Users\\karth\\Downloads\\download.jpg");
         ResponseDTO responseDTO = new ResponseDTO("Sent Email Successfully","toEmail");
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
+
+    /**
+     * @Purpose to register the user into the data base
+     * @param userDTO
+     * @return the status and user data
+     */
+    @PostMapping("/register")
+    public ResponseEntity<ResponseDTO> registerUserInBookStore(@RequestBody UserDTO userDTO){
+        UserData userData = userRegistrationService.registerUserInBookStore(userDTO);
+        ResponseDTO responseDTO = new ResponseDTO("Registered user Successfully",userData);
+        return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
     }
 
 
