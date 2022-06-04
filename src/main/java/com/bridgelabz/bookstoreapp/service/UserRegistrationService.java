@@ -29,25 +29,24 @@ public class UserRegistrationService implements IUserRegistrationService {
     private ModelMapper modelMapper;
 
 
-
     @Override
     public ResponseDTO registerUserInBookStore(UserDTO userDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         UserData user = userRegistrationRepository.findUserDataByEmail(userDTO.getEmail());
-        if(user==null){//check for user exists
+        if (user == null) {//check for user exists
             //maps the userdto with userdata class
-            userData = modelMapper.map(userDTO,UserData.class);
-           userData.setCreatedDate(LocalDate.now());
-           //encrypting the password using password encoder
-           String epassword = bCryptPasswordEncoder.encode(userDTO.getPassword());
-           userData.setPassword(epassword);
-            System.out.println("password is "+epassword);
+            userData = modelMapper.map(userDTO, UserData.class);
+            userData.setCreatedDate(LocalDate.now());
+            //encrypting the password using password encoder
+            String epassword = bCryptPasswordEncoder.encode(userDTO.getPassword());
+            userData.setPassword(epassword);
+            System.out.println("password is " + epassword);
             userData = userRegistrationRepository.save(userData);
             responseDTO.setMessage("User Created successfully");
             responseDTO.setData(userData);
-        }else {
+        } else {
             responseDTO.setMessage("user not created");
-            responseDTO.setData("user with "+userDTO.getEmail()+" is already exists" );
+            responseDTO.setData("user with " + userDTO.getEmail() + " is already exists");
         }
         return responseDTO;
     }
@@ -59,7 +58,8 @@ public class UserRegistrationService implements IUserRegistrationService {
         UserData userDataByEmail = userRegistrationRepository.findUserDataByEmail(userLoginDTO.getEmail());
         if (userList.contains(userDataByEmail)) {
             String password = userDataByEmail.getPassword();
-            if (password.equals(userLoginDTO.getPassword())) {
+            //chacking for password encryption match with raw passowrd
+            if (bCryptPasswordEncoder.matches(userLoginDTO.getPassword(),password)) {
                 responseDTO.setMessage("login SuccessFul");
                 responseDTO.setData(userDataByEmail);
                 return responseDTO;
