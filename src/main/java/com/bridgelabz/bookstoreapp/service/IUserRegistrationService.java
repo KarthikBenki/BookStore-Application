@@ -8,7 +8,7 @@ import com.bridgelabz.bookstoreapp.entity.UserData;
 
 public interface IUserRegistrationService {
 
-    UserData registerUserInBookStore(UserDTO userDTO);
+    ResponseDTO registerUserInBookStore(UserDTO userDTO);
 
     ResponseDTO loginUser(UserLoginDTO userLoginDTO);
 }

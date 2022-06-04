@@ -3,11 +3,13 @@ package com.bridgelabz.bookstoreapp.entity;
 import com.bridgelabz.bookstoreapp.dto.UserDTO;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
+@Component
 @ToString
 @Entity
 @Table(name = "user_registration")
@@ -21,8 +23,9 @@ public class UserData {
     private LocalDate dob;
     private String email;
     private String password;
+    private LocalDate createdDate;
 
-    public UserData(Long id, String firstName, String lastName, String kyc, LocalDate dob, String email, String password) {
+    public UserData(Long id, String firstName, String lastName, String kyc, LocalDate dob, String email, String password, LocalDate createdDate) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,6 +33,7 @@ public class UserData {
         this.dob = dob;
         this.email = email;
         this.password = password;
+        this.createdDate = createdDate;
     }
 
     public UserData(UserDTO userDTO) {

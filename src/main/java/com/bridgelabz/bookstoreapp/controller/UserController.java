@@ -74,8 +74,7 @@ public class UserController {
      */
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO> registerUserInBookStore(@RequestBody UserDTO userDTO){
-        UserData userData = userRegistrationService.registerUserInBookStore(userDTO);
-        ResponseDTO responseDTO = new ResponseDTO("Registered user Successfully",userData);
+        ResponseDTO responseDTO = userRegistrationService.registerUserInBookStore(userDTO);
         return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
     }
 
