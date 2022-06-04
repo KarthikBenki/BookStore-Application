@@ -24,8 +24,9 @@ public class UserData {
     private String email;
     private String password;
     private LocalDate createdDate;
+    private Boolean isVerified=false;
 
-    public UserData(Long id, String firstName, String lastName, String kyc, LocalDate dob, String email, String password, LocalDate createdDate) {
+    public UserData(Long id, String firstName, String lastName, String kyc, LocalDate dob, String email, String password, LocalDate createdDate, Boolean isVerified) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,6 +35,7 @@ public class UserData {
         this.email = email;
         this.password = password;
         this.createdDate = createdDate;
+        this.isVerified = isVerified;
     }
 
     public UserData(UserDTO userDTO) {

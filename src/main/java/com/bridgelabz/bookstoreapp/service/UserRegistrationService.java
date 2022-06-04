@@ -50,13 +50,18 @@ public class UserRegistrationService implements IUserRegistrationService {
             userData.setPassword(epassword);
             System.out.println("password is " + epassword);
             userData = userRegistrationRepository.save(userData);
-             otp = otpGenerator.generateOTP();
-            String requestUrl = "http://localhost:8080/bookstoreApi/verify/email/"+otp;
-            System.out.println("the generated otp is "+otp);
+            otp = otpGenerator.generateOTP();
+            String requestUrl = "http://localhost:8080/bookstoreApi/verify/email/" + otp;
+            System.out.println("the generated otp is " + otp);
             try {
 
-                emailSenderService.sendEmail(userDTO.getEmail(),"your Registration is successful",requestUrl);
-            }catch (Exception e) {
+                emailSenderService.sendEmail(
+                        userDTO.getEmail(),
+                        "Your Registration is successful",
+                        requestUrl+"\n your generated otp is "
+                                +otp+
+                                " click on the link above to verify the user");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             responseDTO.setMessage("User Created successfully");
@@ -76,7 +81,7 @@ public class UserRegistrationService implements IUserRegistrationService {
         if (userList.contains(userDataByEmail)) {
             String password = userDataByEmail.getPassword();
             //chacking for password encryption match with raw passowrd
-            if (bCryptPasswordEncoder.matches(userLoginDTO.getPassword(),password)) {
+            if (bCryptPasswordEncoder.matches(userLoginDTO.getPassword(), password)) {
                 responseDTO.setMessage("login SuccessFul");
                 responseDTO.setData(userDataByEmail);
                 return responseDTO;
@@ -85,17 +90,20 @@ public class UserRegistrationService implements IUserRegistrationService {
                 responseDTO.setData("Wrong password");
                 return responseDTO;
             }
-
         }
-
         return new ResponseDTO("User not found!", "Wrong email");
     }
 
 
-    public ResponseDTO verifyEmailUsingOtp(Long mailOtp){
-        if(mailOtp.equals(otp)){
-            return new ResponseDTO("otp verified",mailOtp);
+    public ResponseDTO verifyEmailUsingOtp(Long mailOtp) {
+        if (mailOtp.equals(otp)&&userData.getIsVerified().equals(false)) {
+            userData.setIsVerified(true);//setting verification to true after verification
+            //update the userData with is verified value
+            userRegistrationRepository.save(userData);
+            return new ResponseDTO("otp verified", userData);
+        } else if (userData.getIsVerified()) {
+            return new ResponseDTO("otp already verified no need to verify again", userData);
         }
-        return new ResponseDTO("Invalid otp",mailOtp);
+        return new ResponseDTO("Invalid otp", "please enter correct otp");
     }
 }
