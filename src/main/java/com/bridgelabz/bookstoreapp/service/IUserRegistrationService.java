@@ -11,4 +11,6 @@ public interface IUserRegistrationService {
     ResponseDTO registerUserInBookStore(UserDTO userDTO);
 
     ResponseDTO loginUser(UserLoginDTO userLoginDTO);
+
+    ResponseDTO verifyEmailUsingOtp(Long otp);
 }

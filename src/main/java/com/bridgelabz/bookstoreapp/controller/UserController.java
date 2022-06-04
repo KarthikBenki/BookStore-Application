@@ -78,6 +78,12 @@ public class UserController {
         return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
     }
 
+    @GetMapping("/verify/email/{otp}")
+    public ResponseEntity<ResponseDTO> verifyEmailUsingOtp(@PathVariable Long otp){
+        ResponseDTO responseDTO = userRegistrationService.verifyEmailUsingOtp(otp);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO> loginUser(@RequestBody UserLoginDTO userLoginDTO){
         ResponseDTO responseDTO = userRegistrationService.loginUser(userLoginDTO);

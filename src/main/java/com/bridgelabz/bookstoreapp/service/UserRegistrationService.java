@@ -5,7 +5,7 @@ import com.bridgelabz.bookstoreapp.dto.UserDTO;
 import com.bridgelabz.bookstoreapp.dto.UserLoginDTO;
 import com.bridgelabz.bookstoreapp.entity.UserData;
 import com.bridgelabz.bookstoreapp.repository.UserRegistrationRepository;
-import org.apache.catalina.Store;
+import com.bridgelabz.bookstoreapp.util.OtpGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +28,14 @@ public class UserRegistrationService implements IUserRegistrationService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private OtpGenerator otpGenerator;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
+
+    Long otp;
+
 
     @Override
     public ResponseDTO registerUserInBookStore(UserDTO userDTO) {
@@ -42,6 +50,15 @@ public class UserRegistrationService implements IUserRegistrationService {
             userData.setPassword(epassword);
             System.out.println("password is " + epassword);
             userData = userRegistrationRepository.save(userData);
+             otp = otpGenerator.generateOTP();
+            String requestUrl = "http://localhost:8080/bookstoreApi/verify/email/"+otp;
+            System.out.println("the generated otp is "+otp);
+            try {
+
+                emailSenderService.sendEmail(userDTO.getEmail(),"your Registration is successful",requestUrl);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
             responseDTO.setMessage("User Created successfully");
             responseDTO.setData(userData);
         } else {
@@ -72,5 +89,13 @@ public class UserRegistrationService implements IUserRegistrationService {
         }
 
         return new ResponseDTO("User not found!", "Wrong email");
+    }
+
+
+    public ResponseDTO verifyEmailUsingOtp(Long mailOtp){
+        if(mailOtp.equals(otp)){
+            return new ResponseDTO("otp verified",mailOtp);
+        }
+        return new ResponseDTO("Invalid otp",mailOtp);
     }
 }
