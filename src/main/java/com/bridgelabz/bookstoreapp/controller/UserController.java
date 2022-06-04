@@ -2,6 +2,7 @@ package com.bridgelabz.bookstoreapp.controller;
 
 import com.bridgelabz.bookstoreapp.dto.ResponseDTO;
 import com.bridgelabz.bookstoreapp.dto.UserDTO;
+import com.bridgelabz.bookstoreapp.dto.UserLoginDTO;
 import com.bridgelabz.bookstoreapp.entity.UserData;
 import com.bridgelabz.bookstoreapp.service.EmailSenderService;
 import com.bridgelabz.bookstoreapp.service.IUserRegistrationService;
@@ -76,6 +77,13 @@ public class UserController {
         UserData userData = userRegistrationService.registerUserInBookStore(userDTO);
         ResponseDTO responseDTO = new ResponseDTO("Registered user Successfully",userData);
         return new ResponseEntity<>(responseDTO,HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ResponseDTO> loginUser(@RequestBody UserLoginDTO userLoginDTO){
+        ResponseDTO responseDTO = userRegistrationService.loginUser(userLoginDTO);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+
     }
 
 
