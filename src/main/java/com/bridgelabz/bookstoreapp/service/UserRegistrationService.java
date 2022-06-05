@@ -54,7 +54,6 @@ public class UserRegistrationService implements IUserRegistrationService {
             String requestUrl = "http://localhost:8080/bookstoreApi/verify/email/" + otp;
             System.out.println("the generated otp is " + otp);
             try {
-
                 emailSenderService.sendEmail(
                         userDTO.getEmail(),
                         "Your Registration is successful",
@@ -80,7 +79,7 @@ public class UserRegistrationService implements IUserRegistrationService {
         UserData userDataByEmail = userRegistrationRepository.findUserDataByEmail(userLoginDTO.getEmail());
         if (userList.contains(userDataByEmail)) {
             String password = userDataByEmail.getPassword();
-            //chacking for password encryption match with raw passowrd
+            //checking for password encryption match with raw passowrd
             if (bCryptPasswordEncoder.matches(userLoginDTO.getPassword(), password)) {
                 responseDTO.setMessage("login SuccessFul");
                 responseDTO.setData(userDataByEmail);
@@ -101,7 +100,7 @@ public class UserRegistrationService implements IUserRegistrationService {
             //update the userData with is verified value
             userRegistrationRepository.save(userData);
             return new ResponseDTO("otp verified", userData);
-        } else if (userData.getIsVerified()) {
+        } else if (userData.getIsVerified()&&mailOtp.equals(otp)) {
             return new ResponseDTO("otp already verified no need to verify again", userData);
         }
         return new ResponseDTO("Invalid otp", "please enter correct otp");

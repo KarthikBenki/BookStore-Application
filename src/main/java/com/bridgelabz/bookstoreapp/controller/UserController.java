@@ -3,7 +3,6 @@ package com.bridgelabz.bookstoreapp.controller;
 import com.bridgelabz.bookstoreapp.dto.ResponseDTO;
 import com.bridgelabz.bookstoreapp.dto.UserDTO;
 import com.bridgelabz.bookstoreapp.dto.UserLoginDTO;
-import com.bridgelabz.bookstoreapp.entity.UserData;
 import com.bridgelabz.bookstoreapp.service.EmailSenderService;
 import com.bridgelabz.bookstoreapp.service.IUserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/bookstoreApi")
