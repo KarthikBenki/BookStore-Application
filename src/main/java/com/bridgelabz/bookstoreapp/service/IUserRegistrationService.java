@@ -20,4 +20,7 @@ public interface IUserRegistrationService {
     UserData findUserById(long id);
 
     List<UserData> findAllUsers();
+
+
+    UserData updateUserbyId(Long id, UserDTO userDTO);
 }

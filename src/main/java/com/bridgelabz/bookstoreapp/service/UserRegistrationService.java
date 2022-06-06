@@ -172,5 +172,18 @@ public class UserRegistrationService implements IUserRegistrationService {
         return userRegistrationRepository.findAll();
     }
 
+    /**
+     *
+     * @param id
+     * @param userDTO
+     * @return returns data and status updated
+     */
+    @Override
+    public UserData updateUserbyId(Long id, UserDTO userDTO) {
+        userData = userRegistrationRepository.findById(id).get();
+        userData.updateUserData(userDTO);
+        return userRegistrationRepository.save(userData);
+    }
+
 
 }

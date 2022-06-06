@@ -79,6 +79,20 @@ public class UserController {
 
     /**
      *
+     * @param id
+     * @param userDTO
+     * @return returns status and message if updated successfully
+     */
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseDTO> updateUserbyId(@PathVariable Long id,@RequestBody UserDTO userDTO){
+        UserData userData = userRegistrationService.updateUserbyId(id,userDTO);
+        ResponseDTO responseDTO = new ResponseDTO("Updated successfully",userData);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+
+    /**
+     *
      * @param otp
      * @return returns the data if otp is verified
      */
@@ -137,6 +151,8 @@ public class UserController {
         ResponseDTO responseDTO = new ResponseDTO("The List of users found", userDataList);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+
 
 
 }
