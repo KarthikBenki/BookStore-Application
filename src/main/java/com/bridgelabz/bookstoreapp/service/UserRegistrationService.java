@@ -63,11 +63,13 @@ public class UserRegistrationService implements IUserRegistrationService {
             otp = generateOtpAndSendEmail(userData);
             responseDTO.setMessage("User Created successfully");
             responseDTO.setData(userData);
+            return responseDTO;
         } else {
-            responseDTO.setMessage("user not created");
-            responseDTO.setData("user with " + userDTO.getEmail() + " is already exists");
+//            responseDTO.setMessage("user not created");
+//            responseDTO.setData("user with " + userDTO.getEmail() + " is already exists");
+            throw new UserException("User not Created because user with given email already exists",UserException.ExceptionType.USER_ALREADY_PRESENT);
         }
-        return responseDTO;
+
     }
 
     /**
