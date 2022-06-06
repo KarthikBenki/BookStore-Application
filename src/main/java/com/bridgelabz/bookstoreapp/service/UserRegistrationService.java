@@ -6,6 +6,7 @@ import com.bridgelabz.bookstoreapp.dto.UserLoginDTO;
 import com.bridgelabz.bookstoreapp.entity.UserData;
 import com.bridgelabz.bookstoreapp.repository.UserRegistrationRepository;
 import com.bridgelabz.bookstoreapp.util.OtpGenerator;
+import com.bridgelabz.bookstoreapp.util.TokenGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +34,9 @@ public class UserRegistrationService implements IUserRegistrationService {
 
     @Autowired
     private EmailSenderService emailSenderService;
+
+    @Autowired
+    private TokenGenerator jwtToken;
 
     Long otp;
 
@@ -107,8 +111,9 @@ public class UserRegistrationService implements IUserRegistrationService {
                     responseDTO.setData("please go to your email and verify");
                     return responseDTO;
                 }
+                String tokenString = jwtToken.generateLoginToken(userDataByEmail);
                 responseDTO.setMessage("login SuccessFul");
-                responseDTO.setData(userDataByEmail);
+                responseDTO.setData(tokenString);
                 return responseDTO;
             } else {
                 responseDTO.setMessage("Sorry! login is unsuccessful");

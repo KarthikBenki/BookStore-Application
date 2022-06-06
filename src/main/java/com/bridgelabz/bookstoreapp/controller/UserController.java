@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -93,8 +94,11 @@ public class UserController {
      * @return login successful if user successfully got logged in
      */
     @PostMapping("/login")
-    public ResponseEntity<ResponseDTO> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<ResponseDTO> loginUser(@RequestBody UserLoginDTO userLoginDTO,
+                                                 HttpServletResponse httpServletResponse) {
         ResponseDTO responseDTO = userRegistrationService.loginUser(userLoginDTO);
+        String token = (String)responseDTO.getData();
+        httpServletResponse.setHeader("Authorization",token);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
