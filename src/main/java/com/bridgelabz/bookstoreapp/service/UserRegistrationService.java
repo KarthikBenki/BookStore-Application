@@ -105,4 +105,16 @@ public class UserRegistrationService implements IUserRegistrationService {
         }
         return new ResponseDTO("Invalid otp", "please enter correct otp");
     }
+
+    @Override
+    public String deleteUserById(long id) {
+        userData = findUserById(id);
+        userRegistrationRepository.delete(userData);
+        return userData.getEmail();
+    }
+
+    @Override
+    public  UserData findUserById(long id) {
+        return userRegistrationRepository.findById(id).get();
+    }
 }

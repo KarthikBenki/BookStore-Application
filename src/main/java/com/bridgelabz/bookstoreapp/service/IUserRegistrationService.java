@@ -13,4 +13,7 @@ public interface IUserRegistrationService {
     ResponseDTO loginUser(UserLoginDTO userLoginDTO);
 
     ResponseDTO verifyEmailUsingOtp(Long otp);
+
+    String deleteUserById(long id);
+    UserData findUserById(long id);
 }

@@ -89,6 +89,13 @@ public class UserController {
 
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseDTO> deleteUserById(@PathVariable(value = "id") long id){
+        String email = userRegistrationService.deleteUserById(id);
+        ResponseDTO responseDTO = new ResponseDTO("The data with " +id +" is deleted and the deleted is ",email);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
 
 
 
