@@ -50,19 +50,8 @@ public class UserRegistrationService implements IUserRegistrationService {
             userData.setPassword(epassword);
             System.out.println("password is " + epassword);
             userData = userRegistrationRepository.save(userData);
-            otp = otpGenerator.generateOTP();
-            String requestUrl = "http://localhost:8080/bookstoreApi/verify/email/" + otp;
-            System.out.println("the generated otp is " + otp);
-            try {
-                emailSenderService.sendEmail(
-                        userDTO.getEmail(),
-                        "Your Registration is successful",
-                        requestUrl+"\n your generated otp is "
-                                +otp+
-                                " click on the link above to verify the user");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            System.out.println(userData);
+            otp = generateOtpAndSendEmail(userData);
             responseDTO.setMessage("User Created successfully");
             responseDTO.setData(userData);
         } else {
@@ -70,6 +59,23 @@ public class UserRegistrationService implements IUserRegistrationService {
             responseDTO.setData("user with " + userDTO.getEmail() + " is already exists");
         }
         return responseDTO;
+    }
+
+    private Long generateOtpAndSendEmail(UserData userData) {
+        long generatedOtp = otpGenerator.generateOTP();
+        String requestUrl = "http://localhost:8080/bookstoreApi/verify/email/" + generatedOtp;
+        System.out.println("the generated otp is " + generatedOtp);
+        try {
+            emailSenderService.sendEmail(
+                    userData.getEmail(),
+                    "Your Registration is successful",
+                    requestUrl+"\n your generated otp is "
+                            +generatedOtp+
+                            " click on the link above to verify the user");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return generatedOtp;
     }
 
     @Override
@@ -81,6 +87,12 @@ public class UserRegistrationService implements IUserRegistrationService {
             String password = userDataByEmail.getPassword();
             //checking for password encryption match with raw passowrd
             if (bCryptPasswordEncoder.matches(userLoginDTO.getPassword(), password)) {
+                if(!userDataByEmail.getIsVerified()){
+                    otp = generateOtpAndSendEmail(userDataByEmail);
+                    responseDTO.setMessage("Sorry! login is unsuccessful");
+                    responseDTO.setData("please go to your email and verify");
+                    return responseDTO;
+                }
                 responseDTO.setMessage("login SuccessFul");
                 responseDTO.setData(userDataByEmail);
                 return responseDTO;
