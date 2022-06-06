@@ -36,7 +36,11 @@ public class UserRegistrationService implements IUserRegistrationService {
 
     Long otp;
 
-
+    /**
+     *
+     * @param userDTO
+     * @return registers the users in the database
+     */
     @Override
     public ResponseDTO registerUserInBookStore(UserDTO userDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -61,6 +65,11 @@ public class UserRegistrationService implements IUserRegistrationService {
         return responseDTO;
     }
 
+    /**
+     *
+     * @param userData
+     * @return creates the otp and sends the email
+     */
     private Long generateOtpAndSendEmail(UserData userData) {
         long generatedOtp = otpGenerator.generateOTP();
         String requestUrl = "http://localhost:8080/bookstoreApi/verify/email/" + generatedOtp;
@@ -69,8 +78,8 @@ public class UserRegistrationService implements IUserRegistrationService {
             emailSenderService.sendEmail(
                     userData.getEmail(),
                     "Your Registration is successful",
-                    requestUrl+"\n your generated otp is "
-                            +generatedOtp+
+                    requestUrl + "\n your generated otp is "
+                            + generatedOtp +
                             " click on the link above to verify the user");
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,6 +87,11 @@ public class UserRegistrationService implements IUserRegistrationService {
         return generatedOtp;
     }
 
+    /**
+     *
+     * @param userLoginDTO
+     * @return logins the user and gives access to bookstore
+     */
     @Override
     public ResponseDTO loginUser(UserLoginDTO userLoginDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
@@ -87,7 +101,7 @@ public class UserRegistrationService implements IUserRegistrationService {
             String password = userDataByEmail.getPassword();
             //checking for password encryption match with raw passowrd
             if (bCryptPasswordEncoder.matches(userLoginDTO.getPassword(), password)) {
-                if(!userDataByEmail.getIsVerified()){
+                if (!userDataByEmail.getIsVerified()) {
                     otp = generateOtpAndSendEmail(userDataByEmail);
                     responseDTO.setMessage("Sorry! login is unsuccessful");
                     responseDTO.setData("please go to your email and verify");
@@ -105,19 +119,28 @@ public class UserRegistrationService implements IUserRegistrationService {
         return new ResponseDTO("User not found!", "Wrong email");
     }
 
-
+    /**
+     *
+     * @param mailOtp
+     * @return verifies the otp using mail
+     */
     public ResponseDTO verifyEmailUsingOtp(Long mailOtp) {
-        if (mailOtp.equals(otp)&&userData.getIsVerified().equals(false)) {
+        if (mailOtp.equals(otp) && userData.getIsVerified().equals(false)) {
             userData.setIsVerified(true);//setting verification to true after verification
             //update the userData with is verified value
             userRegistrationRepository.save(userData);
             return new ResponseDTO("otp verified", userData);
-        } else if (userData.getIsVerified()&&mailOtp.equals(otp)) {
+        } else if (userData.getIsVerified() && mailOtp.equals(otp)) {
             return new ResponseDTO("otp already verified no need to verify again", userData);
         }
         return new ResponseDTO("Invalid otp", "please enter correct otp");
     }
 
+    /**
+     * @Purpose to delete the user using his id
+     * @param id
+     * @return
+     */
     @Override
     public String deleteUserById(long id) {
         userData = findUserById(id);
@@ -125,11 +148,20 @@ public class UserRegistrationService implements IUserRegistrationService {
         return userData.getEmail();
     }
 
+    /**
+     *
+     * @param id
+     * @return returns the user details if found using id
+     */
     @Override
-    public  UserData findUserById(long id) {
+    public UserData findUserById(long id) {
         return userRegistrationRepository.findById(id).get();
     }
 
+    /**
+     *
+     * @return returns all the users in the database
+     */
     @Override
     public List<UserData> findAllUsers() {
         return userRegistrationRepository.findAll();
