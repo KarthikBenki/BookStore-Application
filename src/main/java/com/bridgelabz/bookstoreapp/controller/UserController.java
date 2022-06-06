@@ -76,12 +76,22 @@ public class UserController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
+    /**
+     *
+     * @param otp
+     * @return returns the data if otp is verified
+     */
     @GetMapping("/verify/email/{otp}")
     public ResponseEntity<ResponseDTO> verifyEmailUsingOtp(@PathVariable Long otp) {
         ResponseDTO responseDTO = userRegistrationService.verifyEmailUsingOtp(otp);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param userLoginDTO
+     * @return login successful if user successfully got logged in
+     */
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
         ResponseDTO responseDTO = userRegistrationService.loginUser(userLoginDTO);
@@ -89,6 +99,11 @@ public class UserController {
 
     }
 
+    /**
+     *
+     * @param id
+     * @return returns the email of deleted user
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDTO> deleteUserById(@PathVariable(value = "id") long id) {
         String email = userRegistrationService.deleteUserById(id);
@@ -96,6 +111,11 @@ public class UserController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param id
+     * @return returns the user datails of given id
+     */
     @GetMapping("/get/{id}")
     public ResponseEntity<ResponseDTO> findUserById(@PathVariable(value = "id") long id) {
         UserData user = userRegistrationService.findUserById(id);
@@ -103,6 +123,10 @@ public class UserController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @return returns all the users in the database
+     */
     @GetMapping("/get")
     public ResponseEntity<ResponseDTO> findAllUsers(){
         List<UserData> userDataList = userRegistrationService.findAllUsers();
