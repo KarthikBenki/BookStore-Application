@@ -4,6 +4,7 @@ import com.bridgelabz.bookstoreapp.dto.ResponseDTO;
 import com.bridgelabz.bookstoreapp.dto.UserDTO;
 import com.bridgelabz.bookstoreapp.dto.UserLoginDTO;
 import com.bridgelabz.bookstoreapp.entity.UserData;
+import com.bridgelabz.bookstoreapp.exception.UserException;
 import com.bridgelabz.bookstoreapp.repository.UserRegistrationRepository;
 import com.bridgelabz.bookstoreapp.util.OtpGenerator;
 import com.bridgelabz.bookstoreapp.util.TokenGenerator;
@@ -36,7 +37,7 @@ public class UserRegistrationService implements IUserRegistrationService {
     private EmailSenderService emailSenderService;
 
     @Autowired
-    private TokenGenerator jwtToken;
+    private TokenGenerator tokenGenerator;
 
     Long otp;
 
@@ -98,30 +99,24 @@ public class UserRegistrationService implements IUserRegistrationService {
      */
     @Override
     public ResponseDTO loginUser(UserLoginDTO userLoginDTO) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        List<UserData> userList = userRegistrationRepository.findAll();
+        System.out.println(userLoginDTO.getEmail());
         UserData userDataByEmail = userRegistrationRepository.findUserDataByEmail(userLoginDTO.getEmail());
-        if (userList.contains(userDataByEmail)) {
-            String password = userDataByEmail.getPassword();
-            //checking for password encryption match with raw passowrd
-            if (bCryptPasswordEncoder.matches(userLoginDTO.getPassword(), password)) {
-                if (!userDataByEmail.getIsVerified()) {
-                    otp = generateOtpAndSendEmail(userDataByEmail);
-                    responseDTO.setMessage("Sorry! login is unsuccessful");
-                    responseDTO.setData("please go to your email and verify");
-                    return responseDTO;
-                }
-                String tokenString = jwtToken.generateLoginToken(userDataByEmail);
-                responseDTO.setMessage("login SuccessFul");
-                responseDTO.setData(tokenString);
-                return responseDTO;
-            } else {
-                responseDTO.setMessage("Sorry! login is unsuccessful");
-                responseDTO.setData("Wrong password");
-                return responseDTO;
-            }
+        if(userDataByEmail==null){
+            throw new UserException("Enter registered Email",UserException.ExceptionType.EMAIL_NOT_FOUND);
         }
-        return new ResponseDTO("User not found!", "Wrong email");
+        if(userDataByEmail.getIsVerified()){
+            boolean isPassword = bCryptPasswordEncoder.matches(userLoginDTO.getPassword(),
+                                                                userDataByEmail.getPassword());
+            if(!isPassword){
+                throw new UserException("Invalid Password!!!Please Enter Correct Password",
+                        UserException.ExceptionType.PASSWORD_INVALID);
+            }
+            String jwtToken = tokenGenerator.generateLoginToken(userDataByEmail);
+            return new ResponseDTO("Logged in successfully",jwtToken);
+        }
+        otp = generateOtpAndSendEmail(userDataByEmail);
+        throw new UserException("Please verify your email before proceeding",
+                UserException.ExceptionType.EMAIL_NOT_FOUND);
     }
 
     /**
