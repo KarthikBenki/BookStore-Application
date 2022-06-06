@@ -5,6 +5,8 @@ import com.bridgelabz.bookstoreapp.dto.UserDTO;
 import com.bridgelabz.bookstoreapp.dto.UserLoginDTO;
 import com.bridgelabz.bookstoreapp.entity.UserData;
 
+import java.util.List;
+
 
 public interface IUserRegistrationService {
 
@@ -16,4 +18,6 @@ public interface IUserRegistrationService {
 
     String deleteUserById(long id);
     UserData findUserById(long id);
+
+    List<UserData> findAllUsers();
 }

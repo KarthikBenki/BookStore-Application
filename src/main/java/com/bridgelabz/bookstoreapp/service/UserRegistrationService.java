@@ -117,4 +117,11 @@ public class UserRegistrationService implements IUserRegistrationService {
     public  UserData findUserById(long id) {
         return userRegistrationRepository.findById(id).get();
     }
+
+    @Override
+    public List<UserData> findAllUsers() {
+        return userRegistrationRepository.findAll();
+    }
+
+
 }

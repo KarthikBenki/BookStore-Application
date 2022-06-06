@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/bookstoreApi")
@@ -99,6 +100,13 @@ public class UserController {
     public ResponseEntity<ResponseDTO> findUserById(@PathVariable(value = "id") long id) {
         UserData user = userRegistrationService.findUserById(id);
         ResponseDTO responseDTO = new ResponseDTO("The user found successfully", user);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<ResponseDTO> findAllUsers(){
+        List<UserData> userDataList = userRegistrationService.findAllUsers();
+        ResponseDTO responseDTO = new ResponseDTO("The List of users found", userDataList);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
