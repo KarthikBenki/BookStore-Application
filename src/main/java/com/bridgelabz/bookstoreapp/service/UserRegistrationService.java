@@ -27,8 +27,8 @@ public class UserRegistrationService implements IUserRegistrationService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private ModelMapper modelMapper;
+//    @Autowired
+//    private ModelMapper modelMapper;
 
     @Autowired
     private OtpGenerator otpGenerator;
@@ -42,17 +42,16 @@ public class UserRegistrationService implements IUserRegistrationService {
     Long otp;
 
     /**
-     *
      * @param userDTO
      * @return registers the users in the database
      */
     @Override
-    public ResponseDTO registerUserInBookStore(UserDTO userDTO) {
-        ResponseDTO responseDTO = new ResponseDTO();
+    public UserData registerUserInBookStore(UserDTO userDTO) {
         UserData user = userRegistrationRepository.findUserDataByEmail(userDTO.getEmail());
         if (user == null) {//check for user exists
             //maps the userdto with userdata class
-            userData = modelMapper.map(userDTO, UserData.class);
+//            userData = modelMapper.map(userDTO, UserData.class);
+            userData = new UserData(userDTO);
             userData.setCreatedDate(LocalDate.now());
             //encrypting the password using password encoder
             String epassword = bCryptPasswordEncoder.encode(userDTO.getPassword());
@@ -61,19 +60,15 @@ public class UserRegistrationService implements IUserRegistrationService {
             userData = userRegistrationRepository.save(userData);
             System.out.println(userData);
             otp = generateOtpAndSendEmail(userData);
-            responseDTO.setMessage("User Created successfully");
-            responseDTO.setData(userData);
-            return responseDTO;
+            return userData;
         } else {
-//            responseDTO.setMessage("user not created");
-//            responseDTO.setData("user with " + userDTO.getEmail() + " is already exists");
-            throw new UserException("User not Created because user with given email already exists",UserException.ExceptionType.USER_ALREADY_PRESENT);
+            throw new UserException("User not Created because user with given email already exists",
+                    UserException.ExceptionType.USER_ALREADY_PRESENT);
         }
 
     }
 
     /**
-     *
      * @param userData
      * @return creates the otp and sends the email
      */
@@ -95,7 +90,6 @@ public class UserRegistrationService implements IUserRegistrationService {
     }
 
     /**
-     *
      * @param userLoginDTO
      * @return logins the user and gives access to bookstore
      */
@@ -103,18 +97,18 @@ public class UserRegistrationService implements IUserRegistrationService {
     public ResponseDTO loginUser(UserLoginDTO userLoginDTO) {
         System.out.println(userLoginDTO.getEmail());
         UserData userDataByEmail = userRegistrationRepository.findUserDataByEmail(userLoginDTO.getEmail());
-        if(userDataByEmail==null){
-            throw new UserException("Enter registered Email",UserException.ExceptionType.EMAIL_NOT_FOUND);
+        if (userDataByEmail == null) {
+            throw new UserException("Enter registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
         }
-        if(userDataByEmail.getIsVerified()){
+        if (userDataByEmail.getIsVerified()) {
             boolean isPassword = bCryptPasswordEncoder.matches(userLoginDTO.getPassword(),
-                                                                userDataByEmail.getPassword());
-            if(!isPassword){
+                    userDataByEmail.getPassword());
+            if (!isPassword) {
                 throw new UserException("Invalid Password!!!Please Enter Correct Password",
                         UserException.ExceptionType.PASSWORD_INVALID);
             }
             String jwtToken = tokenGenerator.generateLoginToken(userDataByEmail);
-            return new ResponseDTO("Logged in successfully",jwtToken);
+            return new ResponseDTO("Logged in successfully", jwtToken);
         }
         otp = generateOtpAndSendEmail(userDataByEmail);
         throw new UserException("Please verify your email before proceeding",
@@ -122,7 +116,6 @@ public class UserRegistrationService implements IUserRegistrationService {
     }
 
     /**
-     *
      * @param mailOtp
      * @return verifies the otp using mail
      */
@@ -139,9 +132,9 @@ public class UserRegistrationService implements IUserRegistrationService {
     }
 
     /**
-     * @Purpose to delete the user using his id
      * @param id
      * @return
+     * @Purpose to delete the user using his id
      */
     @Override
     public String deleteUserById(long id) {
@@ -151,7 +144,6 @@ public class UserRegistrationService implements IUserRegistrationService {
     }
 
     /**
-     *
      * @param id
      * @return returns the user details if found using id
      */
@@ -161,7 +153,6 @@ public class UserRegistrationService implements IUserRegistrationService {
     }
 
     /**
-     *
      * @return returns all the users in the database
      */
     @Override
@@ -170,7 +161,6 @@ public class UserRegistrationService implements IUserRegistrationService {
     }
 
     /**
-     *
      * @param id
      * @param userDTO
      * @return returns data and status updated

@@ -9,10 +9,12 @@ import com.bridgelabz.bookstoreapp.service.IUserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -72,8 +74,9 @@ public class UserController {
      * @Purpose to register the user into the data base
      */
     @PostMapping("/register")
-    public ResponseEntity<ResponseDTO> registerUserInBookStore(@RequestBody UserDTO userDTO) {
-        ResponseDTO responseDTO = userRegistrationService.registerUserInBookStore(userDTO);
+    public ResponseEntity<ResponseDTO> registerUserInBookStore(@Valid @RequestBody UserDTO userDTO) {
+        UserData userData = userRegistrationService.registerUserInBookStore(userDTO);
+        ResponseDTO responseDTO = new ResponseDTO("User created successfully",userData);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
@@ -84,7 +87,7 @@ public class UserController {
      * @return returns status and message if updated successfully
      */
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseDTO> updateUserbyId(@PathVariable Long id,@RequestBody UserDTO userDTO){
+    public ResponseEntity<ResponseDTO> updateUserbyId(@PathVariable Long id,@Valid @RequestBody UserDTO userDTO){
         UserData userData = userRegistrationService.updateUserbyId(id,userDTO);
         ResponseDTO responseDTO = new ResponseDTO("Updated successfully",userData);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);

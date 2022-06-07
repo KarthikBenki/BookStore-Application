@@ -46,11 +46,11 @@ public class UserData {
     }
 
     public  void updateUserData(UserDTO userDTO) {
-        this.firstName = userDTO.getFirstName();
-        this.lastName = userDTO.getLastName();
-        this.kyc = userDTO.getKyc();
-        this.dob = userDTO.getDob();
-        this.email = userDTO.getEmail();
-        this.password = userDTO.getPassword();
+        this.firstName = userDTO.firstName;
+        this.lastName = userDTO.lastName;
+        this.kyc = userDTO.kyc;
+        this.dob = userDTO.dob;
+        this.email = userDTO.email;
+        this.password = userDTO.password;
     }
 }

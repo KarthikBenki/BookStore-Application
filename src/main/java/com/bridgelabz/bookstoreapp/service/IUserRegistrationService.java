@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IUserRegistrationService {
 
-    ResponseDTO registerUserInBookStore(UserDTO userDTO);
+    UserData registerUserInBookStore(UserDTO userDTO);
 
     ResponseDTO loginUser(UserLoginDTO userLoginDTO);
 
