@@ -9,7 +9,6 @@ import com.bridgelabz.bookstoreapp.service.IUserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -168,8 +167,10 @@ public class UserController {
     }
 
     @PostMapping("/reset/password/{urlToken}")
-    public ResponseEntity<ResponseDTO> resetPassword(@RequestParam String existingPassword,@RequestParam String newPassword,@PathVariable String urlToken){
-            String resetPassword = userRegistrationService.resetPassword(existingPassword,newPassword,urlToken);
+    public ResponseEntity<ResponseDTO> resetPassword(@RequestParam String enterPassword,
+                                                     @RequestParam String confirmPassword,
+                                                     @PathVariable String urlToken){
+            String resetPassword = userRegistrationService.resetPassword(enterPassword, confirmPassword,urlToken);
             ResponseDTO responseDTO = new ResponseDTO("password reset successfully",resetPassword);
             return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }

@@ -194,7 +194,22 @@ public class UserRegistrationService implements IUserRegistrationService {
     }
 
     @Override
-    public String resetPassword(String existingPassword, String newPassword, String urlToken) {
+    public String resetPassword(String enterPassword, String confirmPassword, String urlToken) {
+        String userId = tokenGenerator.decodeJWT(urlToken);
+        System.out.println(userId);
+        UserData userData = findUserById(Long.parseLong(userId));
+        boolean isPassword = enterPassword.equals(confirmPassword);
+        if(!isPassword){
+            throw new UserException("Both passwords must be same ",UserException.ExceptionType.PASSWORD_INVALID);
+        }
+        String encodePassword = bCryptPasswordEncoder.encode(confirmPassword);
+        userData.setPassword(encodePassword);
+        userRegistrationRepository.save(userData);
+        return "Password Has Been Reset";
+    }
+
+
+    public String updatePassword(String existingPassword, String newPassword, String urlToken) {
         String userId = tokenGenerator.decodeJWT(urlToken);
         System.out.println(userId);
         UserData userData = findUserById(Long.parseLong(userId));
@@ -209,7 +224,7 @@ public class UserRegistrationService implements IUserRegistrationService {
     }
 
 
-    
+
 
 
 }
