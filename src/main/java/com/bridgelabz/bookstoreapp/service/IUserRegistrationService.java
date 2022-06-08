@@ -23,4 +23,8 @@ public interface IUserRegistrationService {
 
 
     UserData updateUserbyId(Long id, UserDTO userDTO);
+
+    String resetPasswordLink(String email);
+
+    String resetPassword(String password, String urlToken);
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserRegistrationService implements IUserRegistrationService {
@@ -170,6 +171,41 @@ public class UserRegistrationService implements IUserRegistrationService {
         userData = userRegistrationRepository.findById(id).get();
         userData.updateUserData(userDTO);
         return userRegistrationRepository.save(userData);
+    }
+
+    /**
+     * @purpose to generate reset password link
+     * @param email to which password has to reset
+     * @return  returns message with email address
+     */
+    @Override
+    public String resetPasswordLink(String email) {
+        UserData user = userRegistrationRepository.findUserDataByEmail(email);
+        if(user == null){
+            throw new UserException("Email Not found",UserException.ExceptionType.EMAIL_NOT_FOUND);
+        }
+        String token = tokenGenerator.generateLoginToken(user);
+        String urlToken = "Click on below link to Reset your Password \n" +
+            "http://localhost:8080/bookstoreApi/reset/password/"+token;
+        emailSenderService.sendEmail(user.getEmail(),"Reset Password",urlToken);
+                
+        return "Reset Password Link Has Been Sent To Your Email Address : "+user.getEmail();
+    }
+
+    @Override
+    public String resetPassword(String password, String urlToken) {
+        System.out.println(urlToken);
+        String userId = tokenGenerator.decodeJWT(urlToken);
+        System.out.println(userId);
+
+        UserData userData = findUserById(Long.parseLong(userId));
+        if(userData == null){
+            throw new UserException("User Not Found",UserException.ExceptionType.INVALID_DATA);
+        }
+        String encodePassword = bCryptPasswordEncoder.encode(password);
+        userData.setPassword(encodePassword);
+        userRegistrationRepository.save(userData);
+        return "Password Has Been Reset";
     }
 
 
