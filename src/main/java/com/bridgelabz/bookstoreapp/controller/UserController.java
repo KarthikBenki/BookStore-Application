@@ -168,8 +168,8 @@ public class UserController {
     }
 
     @PostMapping("/reset/password/{urlToken}")
-    public ResponseEntity<ResponseDTO> resetPassword(@RequestParam String password,@PathVariable String urlToken){
-            String resetPassword = userRegistrationService.resetPassword(password,urlToken);
+    public ResponseEntity<ResponseDTO> resetPassword(@RequestParam String existingPassword,@RequestParam String newPassword,@PathVariable String urlToken){
+            String resetPassword = userRegistrationService.resetPassword(existingPassword,newPassword,urlToken);
             ResponseDTO responseDTO = new ResponseDTO("password reset successfully",resetPassword);
             return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
