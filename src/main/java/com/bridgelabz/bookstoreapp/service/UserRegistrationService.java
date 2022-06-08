@@ -186,7 +186,8 @@ public class UserRegistrationService implements IUserRegistrationService {
         }
         String token = tokenGenerator.generateLoginToken(user);
         String urlToken = "Click on below link to Reset your Password \n" +
-            "http://localhost:8080/bookstoreApi/reset/password/"+token;
+            "http://localhost:8080/bookstoreApi/reset/password/"+token+
+                "\n The generated token is :  "+token;
         emailSenderService.sendEmail(user.getEmail(),"Reset Password",urlToken);
                 
         return "Reset Password Link Has Been Sent To Your Email Address : "+user.getEmail();
