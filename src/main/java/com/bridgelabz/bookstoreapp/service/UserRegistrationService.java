@@ -28,8 +28,8 @@ public class UserRegistrationService implements IUserRegistrationService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-//    @Autowired
-//    private ModelMapper modelMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private OtpGenerator otpGenerator;
@@ -48,8 +48,8 @@ public class UserRegistrationService implements IUserRegistrationService {
      */
     @Override
     public UserData registerUserInBookStore(UserDTO userDTO) {
-        UserData user = userRegistrationRepository.findUserDataByEmail(userDTO.getEmail());
-        if (user == null) {//check for user exists
+        UserData userDataByEmail = userRegistrationRepository.findUserDataByEmail(userDTO.getEmail());
+        if (userDataByEmail == null) {//check for user exists
             //maps the userdto with userdata class
 //            userData = modelMapper.map(userDTO, UserData.class);
             userData = new UserData(userDTO);
@@ -98,6 +98,7 @@ public class UserRegistrationService implements IUserRegistrationService {
     public ResponseDTO loginUser(UserLoginDTO userLoginDTO) {
         System.out.println(userLoginDTO.getEmail());
         UserData userDataByEmail = userRegistrationRepository.findUserDataByEmail(userLoginDTO.getEmail());
+        userData  = modelMapper.map(userDataByEmail, UserData.class);
         if (userDataByEmail == null) {
             throw new UserException("Enter registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
         }
