@@ -97,22 +97,23 @@ public class UserRegistrationService implements IUserRegistrationService {
     @Override
     public ResponseDTO loginUser(UserLoginDTO userLoginDTO) {
         System.out.println(userLoginDTO.getEmail());
-        UserData userDataByEmail = userRegistrationRepository.findUserDataByEmail(userLoginDTO.getEmail());
-        userData  = modelMapper.map(userDataByEmail, UserData.class);
-        if (userDataByEmail == null) {
+        userData = userRegistrationRepository.findUserDataByEmail(userLoginDTO.getEmail());
+        System.out.println(userData);
+
+        if (userData.equals(null)) {
             throw new UserException("Enter registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
         }
-        if (userDataByEmail.getIsVerified()) {
+        if (userData.getIsVerified()) {
             boolean isPassword = bCryptPasswordEncoder.matches(userLoginDTO.getPassword(),
-                    userDataByEmail.getPassword());
+                    userData.getPassword());
             if (!isPassword) {
                 throw new UserException("Invalid Password!!!Please Enter Correct Password",
                         UserException.ExceptionType.PASSWORD_INVALID);
             }
-            String jwtToken = tokenGenerator.generateLoginToken(userDataByEmail);
+            String jwtToken = tokenGenerator.generateLoginToken(userData);
             return new ResponseDTO("Logged in successfully", jwtToken);
         }
-        otp = generateOtpAndSendEmail(userDataByEmail);
+        otp = generateOtpAndSendEmail(userData);
         throw new UserException("Please verify your email before proceeding",
                 UserException.ExceptionType.EMAIL_NOT_FOUND);
     }
