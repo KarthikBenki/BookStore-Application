@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -97,12 +98,14 @@ public class UserRegistrationService implements IUserRegistrationService {
     @Override
     public ResponseDTO loginUser(UserLoginDTO userLoginDTO) {
         System.out.println(userLoginDTO.getEmail());
-        userData = userRegistrationRepository.findUserDataByEmail(userLoginDTO.getEmail());
+//        userData = userRegistrationRepository.findUserDataByEmail(userLoginDTO.getEmail());
+        userData = userRegistrationRepository.findUserDataByEmailId(userLoginDTO.getEmail())
+                        .orElseThrow(()-> new UserException("Enter registered Email, Email not found", UserException.ExceptionType.EMAIL_NOT_FOUND));
         System.out.println(userData);
 
-        if (userData.equals(null)) {
-            throw new UserException("Enter registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
-        }
+//        if (userData.equals(null)) {
+//            throw new UserException("Enter registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
+//        }
         if (userData.getIsVerified()) {
             boolean isPassword = bCryptPasswordEncoder.matches(userLoginDTO.getPassword(),
                     userData.getPassword());
@@ -182,7 +185,9 @@ public class UserRegistrationService implements IUserRegistrationService {
      */
     @Override
     public String resetPasswordLink(String email) {
-       UserData userData = userRegistrationRepository.findUserDataByEmail(email);
+//       UserData userData = userRegistrationRepository.findUserDataByEmail(email);
+        UserData userData = userRegistrationRepository.findUserDataByEmailId(email)
+                .orElseThrow(()->new UserException("Email Not found",UserException.ExceptionType.EMAIL_NOT_FOUND));
         if(userData == null){
             throw new UserException("Email Not found",UserException.ExceptionType.EMAIL_NOT_FOUND);
         }
