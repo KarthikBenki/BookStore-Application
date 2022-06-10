@@ -14,4 +14,8 @@ public interface IBookService {
     List<BookDetailsModel> getAllBooks();
 
     int getCountOfBooks();
+
+    List<BookDetailsModel> getBooksWithIncreasingOrderOfTheirPrice();
+
+    List<BookDetailsModel> getBooksWithDecreasingOrderOfTheirPrice();
 }

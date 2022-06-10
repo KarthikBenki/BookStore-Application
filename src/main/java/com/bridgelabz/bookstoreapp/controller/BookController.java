@@ -47,4 +47,21 @@ public class BookController {
             int count  = bookService.getCountOfBooks();
             return new ResponseEntity<>(new ResponseDTO("The books count is : ",count), HttpStatus.OK);
     }
+
+
+    @GetMapping("/getBookAscending")
+    public ResponseEntity<ResponseDTO> getBooksWithIncreasingOrderOfTheirPrice(){
+        List<BookDetailsModel> bookDetailsModels = bookService.getBooksWithIncreasingOrderOfTheirPrice();
+        ResponseDTO responseDTO = new ResponseDTO("Showing books in ascending order",
+                bookDetailsModels);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
+
+    @GetMapping("/getBookDescending")
+    public ResponseEntity<ResponseDTO> getBooksWithDecreasingOrderOfTheirPrice(){
+        List<BookDetailsModel> bookDetailsModels = bookService.getBooksWithDecreasingOrderOfTheirPrice();
+        ResponseDTO responseDTO = new ResponseDTO("Showing books in descending order",
+                bookDetailsModels);
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+    }
 }

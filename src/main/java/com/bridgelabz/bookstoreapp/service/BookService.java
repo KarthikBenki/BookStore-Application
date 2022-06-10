@@ -7,8 +7,11 @@ import com.bridgelabz.bookstoreapp.repository.IBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService implements IBookService {
@@ -40,5 +43,24 @@ public class BookService implements IBookService {
     @Override
     public int getCountOfBooks() {
         return bookRepository.findAll().size();
+    }
+
+    @Override
+    public List<BookDetailsModel> getBooksWithIncreasingOrderOfTheirPrice() {
+        List<BookDetailsModel> bookDetails = bookRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(bookDetailsModel->bookDetailsModel.getBookPrice()))
+                .collect(Collectors.toList());
+        return bookDetails;
+    }
+
+    @Override
+    public List<BookDetailsModel> getBooksWithDecreasingOrderOfTheirPrice() {
+        List<BookDetailsModel> bookDetails = bookRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(bookDetailsModel -> bookDetailsModel.getBookPrice()))
+                .collect(Collectors.toList());
+        Collections.reverse(bookDetails);
+        return bookDetails;
     }
 }
