@@ -25,9 +25,9 @@ public class BookController {
     }
 
     @PostMapping("/addBook")
-    public ResponseEntity<ResponseDTO> addBook(@RequestBody BookDTO bookDTO) {
+    public ResponseEntity<ResponseDTO> addBook(@RequestBody BookDTO bookDTO,@RequestHeader String token) {
         System.out.println(bookDTO);
-        BookDetailsModel bookDetailsModel = bookService.addBook(bookDTO);
+        BookDetailsModel bookDetailsModel = bookService.addBook(bookDTO,token);
         ResponseDTO responseDTO = new ResponseDTO("Book Added Successfully", bookDetailsModel);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
 

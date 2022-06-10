@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface IBookService {
 
-    BookDetailsModel addBook(BookDTO bookDTO);
+    BookDetailsModel addBook(BookDTO bookDTO, String token);
 
     List<BookDetailsModel> getAllBooks();
 
