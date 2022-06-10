@@ -9,19 +9,12 @@ import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
 public class BookStoreAppApplication {
-	@Autowired
-	private EmailSenderService senderService;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(BookStoreAppApplication.class, args);
 		System.out.println("Welcome to AddressBook App");
 	}
 
-//	@EventListener(ApplicationReadyEvent.class)
-//	public void sendMail(){
-//		senderService.sendEmail("kumbharshardul384@gmail.com",
-//				"This is Subject",
-//				"This is body of the email lets see");
-//	}
 
 }
