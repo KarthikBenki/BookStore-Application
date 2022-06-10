@@ -5,7 +5,9 @@ import com.bridgelabz.bookstoreapp.entity.BookDetailsModel;
 import com.bridgelabz.bookstoreapp.exception.BookStoreException;
 import com.bridgelabz.bookstoreapp.repository.IBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,4 +65,23 @@ public class BookService implements IBookService {
         Collections.reverse(bookDetails);
         return bookDetails;
     }
+
+    @Override
+    public List<BookDetailsModel> getBooksWithPublishingYear() {
+        List<BookDetailsModel> bookDetails = bookRepository.findAll()
+                .stream().sorted(Comparator.comparing(bookDetailsModel -> bookDetailsModel.getPublishingYear()))
+                .collect(Collectors.toList());
+        Collections.reverse(bookDetails);
+        return bookDetails;
+    }
+
+    @Override
+    public List<BookDetailsModel> getBooksByNewLaunch() {
+        List<BookDetailsModel> bookDetails = bookRepository.findAll()
+                .stream().sorted(Comparator.comparing(bookDetailsModel -> bookDetailsModel.getCreatedAt()))
+                .collect(Collectors.toList());
+        return bookDetails;
+    }
+
+
 }

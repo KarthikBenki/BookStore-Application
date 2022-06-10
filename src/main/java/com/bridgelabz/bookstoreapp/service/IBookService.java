@@ -18,4 +18,8 @@ public interface IBookService {
     List<BookDetailsModel> getBooksWithIncreasingOrderOfTheirPrice();
 
     List<BookDetailsModel> getBooksWithDecreasingOrderOfTheirPrice();
+
+    List<BookDetailsModel> getBooksWithPublishingYear();
+
+    List<BookDetailsModel> getBooksByNewLaunch();
 }

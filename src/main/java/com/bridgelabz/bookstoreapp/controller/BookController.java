@@ -64,4 +64,20 @@ public class BookController {
                 bookDetailsModels);
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
+
+    @GetMapping("/getBooksByPublishingYear")
+    public ResponseEntity<ResponseDTO> getBooksWithPublishingYear(){
+        List<BookDetailsModel> bookDetailsModels = bookService.getBooksWithPublishingYear();
+        ResponseDTO responseDTO = new ResponseDTO("Showing books according to publishing year",
+                bookDetailsModels);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/getBooksByNewLaunch")
+    public ResponseEntity<ResponseDTO> getBooksByNewLaunch(){
+        List<BookDetailsModel> bookDetailsModels = bookService.getBooksByNewLaunch();
+        ResponseDTO responseDTO = new ResponseDTO("Showing books according to New Launch",
+                bookDetailsModels);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }
