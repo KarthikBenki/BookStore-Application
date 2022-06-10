@@ -22,4 +22,6 @@ public interface IBookService {
     List<BookDetailsModel> getBooksWithPublishingYear();
 
     List<BookDetailsModel> getBooksByNewLaunch();
+
+    BookDetailsModel getBookById(Long id);
 }

@@ -80,4 +80,11 @@ public class BookController {
                 bookDetailsModels);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ResponseDTO> getBookById(@PathVariable("id") Long id){
+        BookDetailsModel bookDetailsModel = bookService.getBookById(id);
+        ResponseDTO responseDTO = new ResponseDTO("Got Book By Id",bookDetailsModel);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }

@@ -83,5 +83,10 @@ public class BookService implements IBookService {
         return bookDetails;
     }
 
+    @Override
+    public BookDetailsModel getBookById(Long bookId) {
+        return bookRepository.findById(bookId).orElseThrow(()->new BookStoreException(BookStoreException.ExceptionTypes.BOOK_NOT_FOUND));
+    }
+
 
 }
