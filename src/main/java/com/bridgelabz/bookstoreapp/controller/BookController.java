@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -29,6 +31,14 @@ public class BookController {
         ResponseDTO responseDTO = new ResponseDTO("Book Added Successfully", bookDetailsModel);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
 
+
+    }
+
+    @GetMapping("/getAllBooks")
+    public ResponseEntity<ResponseDTO> getAllBooks(){
+        List<BookDetailsModel> bookDetailsModels = bookService.getAllBooks();
+        ResponseDTO responseDTO = new ResponseDTO("Got All Books List",bookDetailsModels);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
 }

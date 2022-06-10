@@ -7,6 +7,7 @@ import com.bridgelabz.bookstoreapp.repository.IBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,5 +27,13 @@ public class BookService implements IBookService {
         }
         bookDetailsModel = new BookDetailsModel(bookDTO);
         return bookRepository.save(bookDetailsModel);
+    }
+
+    @Override
+    public List<BookDetailsModel> getAllBooks() {
+       if(bookRepository.findAll().size() == 0){
+           throw new BookStoreException(BookStoreException.ExceptionTypes.NO_BOOKS_FOUND);
+       }
+       return bookRepository.findAll();
     }
 }
