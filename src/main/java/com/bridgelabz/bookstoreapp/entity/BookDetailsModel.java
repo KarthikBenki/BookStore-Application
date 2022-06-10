@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @Component
@@ -26,8 +25,10 @@ public class BookDetailsModel {
     private int publishingYear;
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    private String imageURL;
 
-    public BookDetailsModel(Long bookId, String bookName, String authorName, String description, double bookPrice, double quantity, int rating, int publishingYear) {
+
+    public BookDetailsModel(Long bookId, String bookName,String imageURL, String authorName, String description, double bookPrice, double quantity, int rating, int publishingYear) {
         this.bookId = bookId;
         this.bookName = bookName;
         this.authorName = authorName;
@@ -35,6 +36,7 @@ public class BookDetailsModel {
         this.bookPrice = bookPrice;
         this.quantity = quantity;
         this.rating = rating;
+        this.imageURL = imageURL;
         this.publishingYear = publishingYear;
 
     }
@@ -49,6 +51,7 @@ public class BookDetailsModel {
         this.bookPrice = bookDTO.getBookPrice();
         this.quantity = bookDTO.getQuantity();
         this.rating = bookDTO.getRating();
+        this.imageURL = bookDTO.getImageURL();
         this.publishingYear = bookDTO.getPublishingYear();
     }
 
