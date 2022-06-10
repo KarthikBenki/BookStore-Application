@@ -41,4 +41,10 @@ public class BookController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
 
     }
+
+    @GetMapping("/books/count")
+    public ResponseEntity<ResponseDTO> getTotalCount() {
+            int count  = bookService.getCountOfBooks();
+            return new ResponseEntity<>(new ResponseDTO("The books count is : ",count), HttpStatus.OK);
+    }
 }

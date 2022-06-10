@@ -31,9 +31,14 @@ public class BookService implements IBookService {
 
     @Override
     public List<BookDetailsModel> getAllBooks() {
-       if(bookRepository.findAll().size() == 0){
-           throw new BookStoreException(BookStoreException.ExceptionTypes.NO_BOOKS_FOUND);
-       }
-       return bookRepository.findAll();
+        if (bookRepository.findAll().size() == 0) {
+            throw new BookStoreException(BookStoreException.ExceptionTypes.NO_BOOKS_FOUND);
+        }
+        return bookRepository.findAll();
+    }
+
+    @Override
+    public int getCountOfBooks() {
+        return bookRepository.findAll().size();
     }
 }

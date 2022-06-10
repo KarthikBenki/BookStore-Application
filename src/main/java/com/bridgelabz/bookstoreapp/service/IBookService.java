@@ -12,4 +12,6 @@ public interface IBookService {
     BookDetailsModel addBook(BookDTO bookDTO);
 
     List<BookDetailsModel> getAllBooks();
+
+    int getCountOfBooks();
 }
