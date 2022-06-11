@@ -34,18 +34,22 @@ public class BookService implements IBookService {
 
     @Override
     public BookDetailsModel addBook(BookDTO bookDTO, String token) {
-        Long id  = Long.valueOf(tokenGenerator.decodeJWT(token));
+        Long id = Long.valueOf(tokenGenerator.decodeJWT(token));
         UserData userData = userRegistrationRepository.findById(id)
-                .orElseThrow(()->new UserException("User not found",UserException.ExceptionType.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserException("User not found", UserException.ExceptionType.USER_NOT_FOUND));
+        String userRole = userData.getRole();
         System.out.println(userData.getEmail());
-
-        Optional<BookDetailsModel> searchByName = bookRepository.findByBookName(bookDTO.getBookName());
-        if (searchByName.isPresent()) {
-            throw new BookStoreException(BookStoreException.ExceptionTypes.BOOK_AlREADY_PRESENT);
+        if (userRole.equals("seller")) {
+            Optional<BookDetailsModel> searchByName = bookRepository.findByBookName(bookDTO.getBookName());
+            if (searchByName.isPresent()) {
+                throw new BookStoreException(BookStoreException.ExceptionTypes.BOOK_AlREADY_PRESENT);
+            }
+            bookDetailsModel = new BookDetailsModel(bookDTO);
+            return bookRepository.save(bookDetailsModel);
         }
-        bookDetailsModel = new BookDetailsModel(bookDTO);
-        return bookRepository.save(bookDetailsModel);
+        throw new UserException("you are not a Authorised user", UserException.ExceptionType.USER_UNAUTHORISED);
     }
+
 
     @Override
     public List<BookDetailsModel> getAllBooks() {
@@ -64,7 +68,7 @@ public class BookService implements IBookService {
     public List<BookDetailsModel> getBooksWithIncreasingOrderOfTheirPrice() {
         List<BookDetailsModel> bookDetails = bookRepository.findAll()
                 .stream()
-                .sorted(Comparator.comparing(bookDetailsModel->bookDetailsModel.getBookPrice()))
+                .sorted(Comparator.comparing(bookDetailsModel -> bookDetailsModel.getBookPrice()))
                 .collect(Collectors.toList());
         return bookDetails;
     }
@@ -98,7 +102,7 @@ public class BookService implements IBookService {
 
     @Override
     public BookDetailsModel getBookById(Long bookId) {
-        return bookRepository.findById(bookId).orElseThrow(()->new BookStoreException(BookStoreException.ExceptionTypes.BOOK_NOT_FOUND));
+        return bookRepository.findById(bookId).orElseThrow(() -> new BookStoreException(BookStoreException.ExceptionTypes.BOOK_NOT_FOUND));
     }
 
 

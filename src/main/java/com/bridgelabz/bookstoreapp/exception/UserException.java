@@ -8,6 +8,8 @@ public class UserException extends RuntimeException {
         ALREADY_VERIFIED,
         INVALID_DATA,
         USER_NOT_FOUND,
+
+        USER_UNAUTHORISED
     }
 
     public UserException.ExceptionType type;

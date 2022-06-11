@@ -10,14 +10,14 @@ import java.time.LocalDate;
 
 @Data
 public class UserDTO {
-    @Pattern(regexp="^[A-Z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$",message = "please enter valid first name")
+    @Pattern(regexp = "^[A-Z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", message = "please enter valid first name")
     @NotNull(message = "First name cannot be null")
     @NotEmpty(message = "First name cannot be empty")
     public String firstName;
-    @Pattern(regexp="^[A-Z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$",message = "please enter valid last name")
+    @Pattern(regexp = "^[A-Z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$", message = "please enter valid last name")
     @NotNull(message = "First name cannot be null")
     @NotEmpty(message = "First name cannot be empty")
-    public  String lastName;
+    public String lastName;
 
     @NotNull(message = "kyc should not be empty")
     public String kyc;
@@ -27,7 +27,7 @@ public class UserDTO {
     public LocalDate dob;
 
     @Pattern(regexp = "^[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-            message = "please do enter the valid email id" )
+            message = "please do enter the valid email id")
     @NotNull(message = "Email cannot be null")
     @NotEmpty(message = "email cannot be empty")
     public String email;
@@ -39,12 +39,17 @@ public class UserDTO {
     public String password;
 
 
-    public UserDTO(String firstName, String lastName, String kyc, LocalDate dob, String email, String password) {
+    public String role = "Seller";
+
+
+    public UserDTO(String firstName, String lastName, String kyc, LocalDate dob, String email, String password, String role, String imageURL) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.kyc = kyc;
         this.dob = dob;
         this.email = email;
         this.password = password;
+        this.role = role;
+
     }
 }

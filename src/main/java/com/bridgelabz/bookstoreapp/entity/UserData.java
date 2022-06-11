@@ -23,11 +23,14 @@ public class UserData {
     private LocalDate dob;
     private String email;
     private String password;
-    public String imageURL;
+
+    private String role;
+
+
     private LocalDate createdDate;
     private Boolean isVerified = false;
 
-    public UserData(Long id, String firstName, String lastName, String kyc, String imageURL, LocalDate dob, String email, String password, LocalDate createdDate, Boolean isVerified) {
+    public UserData(Long id, String firstName, String lastName, String kyc, String imageURL, LocalDate dob, String email, String password, LocalDate createdDate, Boolean isVerified,String role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,7 +39,7 @@ public class UserData {
         this.email = email;
         this.password = password;
         this.createdDate = createdDate;
-
+        this.role = role;
         this.isVerified = isVerified;
     }
 
@@ -53,7 +56,7 @@ public class UserData {
         this.kyc = userDTO.kyc;
         this.dob = userDTO.dob;
         this.email = userDTO.email;
-
+        this.role = userDTO.role;
         this.password = userDTO.password;
     }
 }
