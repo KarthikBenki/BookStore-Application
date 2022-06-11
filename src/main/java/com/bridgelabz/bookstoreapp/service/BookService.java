@@ -38,7 +38,7 @@ public class BookService implements IBookService {
         UserData userData = userRegistrationRepository.findById(id)
                 .orElseThrow(()->new UserException("User not found",UserException.ExceptionType.USER_NOT_FOUND));
         System.out.println(userData.getEmail());
-        
+
         Optional<BookDetailsModel> searchByName = bookRepository.findByBookName(bookDTO.getBookName());
         if (searchByName.isPresent()) {
             throw new BookStoreException(BookStoreException.ExceptionTypes.BOOK_AlREADY_PRESENT);
