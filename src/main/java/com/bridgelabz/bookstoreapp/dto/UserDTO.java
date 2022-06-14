@@ -22,7 +22,7 @@ public class UserDTO {
     @NotNull(message = "kyc should not be empty")
     public String kyc;
 
-    @NotEmpty(message = "dob cannot be empty")
+//    @NotEmpty(message = "dob cannot be empty")
     @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate dob;
 

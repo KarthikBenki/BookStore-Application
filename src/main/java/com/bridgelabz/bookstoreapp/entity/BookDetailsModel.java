@@ -14,8 +14,9 @@ import java.time.LocalDateTime;
 public class BookDetailsModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookId;
+    private Long userId;
     private String bookName;
     private String authorName;
     private String description;
@@ -28,7 +29,7 @@ public class BookDetailsModel {
     private String imageURL;
 
 
-    public BookDetailsModel(Long bookId, String bookName,String imageURL, String authorName, String description, double bookPrice, double quantity, int rating, int publishingYear) {
+    public BookDetailsModel(Long bookId, String bookName,String imageURL, String authorName, String description, double bookPrice, double quantity, int rating, int publishingYear,Long userId) {
         this.bookId = bookId;
         this.bookName = bookName;
         this.authorName = authorName;
@@ -38,6 +39,7 @@ public class BookDetailsModel {
         this.rating = rating;
         this.imageURL = imageURL;
         this.publishingYear = publishingYear;
+        this.userId = userId;
 
     }
 
@@ -53,6 +55,7 @@ public class BookDetailsModel {
         this.rating = bookDTO.getRating();
         this.imageURL = bookDTO.getImageURL();
         this.publishingYear = bookDTO.getPublishingYear();
+
     }
 
 

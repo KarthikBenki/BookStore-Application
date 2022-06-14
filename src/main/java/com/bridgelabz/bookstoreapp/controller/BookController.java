@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/book")
 public class BookController {
 
@@ -24,7 +25,7 @@ public class BookController {
         return "Hello in Online Book Store DashBoard";
     }
 
-    @PostMapping("/addBook")
+    @PostMapping("/addBook/")
     public ResponseEntity<ResponseDTO> addBook(@RequestBody BookDTO bookDTO,@RequestHeader String token) {
         System.out.println(bookDTO);
         BookDetailsModel bookDetailsModel = bookService.addBook(bookDTO,token);

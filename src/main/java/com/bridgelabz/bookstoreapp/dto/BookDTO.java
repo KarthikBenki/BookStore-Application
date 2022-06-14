@@ -6,15 +6,16 @@ import lombok.ToString;
 @Data
 @ToString
 public class BookDTO {
-public String bookName;
-public String authorName;
-public String description;
-public int rating;
-public double bookPrice;
-public double quantity;
-public int publishingYear;
 
-public String imageURL;
+    public String bookName;
+    public String authorName;
+    public String description;
+    public int rating;
+    public double bookPrice;
+    public double quantity;
+    public int publishingYear;
+
+    public String imageURL;
 
     public BookDTO(String bookName,
                    String authorName,
@@ -23,7 +24,7 @@ public String imageURL;
                    double bookPrice,
                    double quantity,
                    int publishingYear
-    ,String imageURL) {
+            , String imageURL,Long userId) {
         this.bookName = bookName;
         this.authorName = authorName;
         this.description = description;
@@ -32,5 +33,6 @@ public String imageURL;
         this.quantity = quantity;
         this.publishingYear = publishingYear;
         this.imageURL = imageURL;
+
     }
 }

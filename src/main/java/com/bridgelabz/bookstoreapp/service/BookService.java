@@ -44,7 +44,9 @@ public class BookService implements IBookService {
             if (searchByName.isPresent()) {
                 throw new BookStoreException(BookStoreException.ExceptionTypes.BOOK_AlREADY_PRESENT);
             }
+
             bookDetailsModel = new BookDetailsModel(bookDTO);
+            bookDetailsModel.setUserId(id);
             return bookRepository.save(bookDetailsModel);
         }
         throw new UserException("you are not a Authorised user", UserException.ExceptionType.USER_UNAUTHORISED);
