@@ -24,4 +24,6 @@ public interface IBookService {
     List<BookDetailsModel> getBooksByNewLaunch();
 
     BookDetailsModel getBookById(Long id);
+
+    String deleteBookById(Long bookId);
 }

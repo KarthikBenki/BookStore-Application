@@ -107,5 +107,16 @@ public class BookService implements IBookService {
         return bookRepository.findById(bookId).orElseThrow(() -> new BookStoreException(BookStoreException.ExceptionTypes.BOOK_NOT_FOUND));
     }
 
+    @Override
+    public String deleteBookById(Long bookId) {
+        BookDetailsModel bookById = getBookById(bookId);
+        UserData userData = userRegistrationRepository.findById(bookById.getBookId()).get();
+        if(userData.getRole()=="seller"){
+            bookRepository.delete(bookById);
+            return bookById.getBookName();
+        }
+        throw new UserException("You are not authorised to delete this book", UserException.ExceptionType.USER_UNAUTHORISED);
+    }
+
 
 }

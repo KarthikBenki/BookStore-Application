@@ -88,4 +88,12 @@ public class BookController {
         ResponseDTO responseDTO = new ResponseDTO("Got Book By Id",bookDetailsModel);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{bookId}")
+    public ResponseEntity<ResponseDTO> deleteBookById(@PathVariable Long bookId) {
+        String bookName = bookService.deleteBookById(bookId);
+        ResponseDTO responseDTO
+                = new ResponseDTO("The book "+bookName+" with bookId "+bookId+" is deleted",bookName);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }
