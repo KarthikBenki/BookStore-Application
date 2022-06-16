@@ -110,8 +110,12 @@ public class BookService implements IBookService {
     @Override
     public String deleteBookById(Long bookId) {
         BookDetailsModel bookById = getBookById(bookId);
-        UserData userData = userRegistrationRepository.findById(bookById.getBookId()).get();
-        if(userData.getRole()=="seller"){
+
+
+        UserData userData = userRegistrationRepository.findById(bookById.getUserId()).get();
+        System.out.println("role is "+userData.getRole());
+        if(userData.getRole().equals("seller")){
+            System.out.println("inside if statement");
             bookRepository.delete(bookById);
             return bookById.getBookName();
         }
