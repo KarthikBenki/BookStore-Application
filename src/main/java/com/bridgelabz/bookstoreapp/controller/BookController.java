@@ -103,4 +103,11 @@ public class BookController {
         ResponseDTO responseDTO = new ResponseDTO("The book "+ bookDetailsModel.getBookName() + " with book id "+bookId+" is updated ",bookDetailsModel);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/filterBySearch")
+    public ResponseEntity<ResponseDTO> searchByName(@RequestParam String name){
+        List<BookDetailsModel> bookDetailsModels=bookService.searchByName(name);
+        ResponseDTO responseDTO = new ResponseDTO("Books Filterd by search sequence",bookDetailsModels);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }

@@ -145,5 +145,18 @@ public class BookService implements IBookService {
 
     }
 
+    @Override
+    public List<BookDetailsModel> searchByName(String name) {
+        String name1 = name.toLowerCase();
+//        List<BookDetailsModel> bookDetailsModels = bookRepository.findByKeyWord(name);
+        List<BookDetailsModel> bookDetailsModels = getAllBooks();
+        List<BookDetailsModel> collect = bookDetailsModels
+                .stream()
+                .filter(bookDetailsModel -> bookDetailsModel.getBookName().toLowerCase().contains(name1))
+                .collect(Collectors.toList());
+
+        return collect;
+    }
+
 
 }

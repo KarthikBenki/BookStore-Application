@@ -28,4 +28,6 @@ public interface IBookService {
     String deleteBookById(Long bookId);
 
     BookDetailsModel updateBookById(Long bookId, String token, BookDTO bookDTO);
+
+    List<BookDetailsModel> searchByName(String name);
 }
