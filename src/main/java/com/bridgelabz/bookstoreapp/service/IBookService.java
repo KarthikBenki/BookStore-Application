@@ -26,4 +26,6 @@ public interface IBookService {
     BookDetailsModel getBookById(Long id);
 
     String deleteBookById(Long bookId);
+
+    BookDetailsModel updateBookById(Long bookId, String token, BookDTO bookDTO);
 }

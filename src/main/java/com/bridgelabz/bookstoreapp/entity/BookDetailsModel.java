@@ -59,4 +59,14 @@ public class BookDetailsModel {
     }
 
 
+    public void updateBookDetails(BookDTO bookDTO) {
+        this.bookName = bookDTO.getBookName();
+        this.authorName = bookDTO.getAuthorName();
+        this.description = bookDTO.getDescription();
+        this.bookPrice = bookDTO.getBookPrice();
+        this.quantity = bookDTO.getQuantity();
+        this.rating = bookDTO.getRating();
+        this.imageURL = bookDTO.getImageURL();
+        this.publishingYear = bookDTO.getPublishingYear();
+    }
 }

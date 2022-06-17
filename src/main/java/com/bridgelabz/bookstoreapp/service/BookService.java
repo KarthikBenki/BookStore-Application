@@ -32,6 +32,9 @@ public class BookService implements IBookService {
     @Autowired
     private UserRegistrationRepository userRegistrationRepository;
 
+    @Autowired
+    private UserRegistrationService userRegistrationService;
+
     @Override
     public BookDetailsModel addBook(BookDTO bookDTO, String token) {
         Long id = Long.valueOf(tokenGenerator.decodeJWT(token));
@@ -120,6 +123,26 @@ public class BookService implements IBookService {
             return bookById.getBookName();
         }
         throw new UserException("You are not authorised to delete this book", UserException.ExceptionType.USER_UNAUTHORISED);
+    }
+
+    @Override
+    public BookDetailsModel updateBookById(Long bookId, String token, BookDTO bookDTO) {
+        Long userId = Long.valueOf(tokenGenerator.decodeJWT(token));
+        UserData userData = userRegistrationService.findUserById(userId);
+        if(!(userData==null)){
+            System.out.println(userData.getRole());
+            if(userData.getRole().equals("seller")){
+                BookDetailsModel bookDetailsModel = getBookById(bookId);
+                bookDetailsModel.updateBookDetails(bookDTO);
+                bookRepository.save(bookDetailsModel);
+                return bookDetailsModel;
+            }else {
+                throw  new UserException("The user is un authorised to update the book", UserException.ExceptionType.USER_UNAUTHORISED);
+            }
+        }else {
+            throw new UserException("The user not found contact admin", UserException.ExceptionType.USER_NOT_FOUND);
+        }
+
     }
 
 

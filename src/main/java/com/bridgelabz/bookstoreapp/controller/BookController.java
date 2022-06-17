@@ -66,7 +66,7 @@ public class BookController {
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 
-    @GetMapping("/getBooksByPublishingYear")
+    @GetMapping("/getBook sByPublishingYear")
     public ResponseEntity<ResponseDTO> getBooksWithPublishingYear(){
         List<BookDetailsModel> bookDetailsModels = bookService.getBooksWithPublishingYear();
         ResponseDTO responseDTO = new ResponseDTO("Showing books according to publishing year",
@@ -94,6 +94,13 @@ public class BookController {
         String bookName = bookService.deleteBookById(bookId);
         ResponseDTO responseDTO
                 = new ResponseDTO("The book "+bookName+" with bookId "+bookId+" is deleted",bookName);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{bookId}")
+    public  ResponseEntity<ResponseDTO> updateBookById(@PathVariable Long bookId,@RequestHeader String token,@RequestBody BookDTO bookDTO){
+        BookDetailsModel bookDetailsModel = bookService.updateBookById(bookId, token,bookDTO);
+        ResponseDTO responseDTO = new ResponseDTO("The book "+ bookDetailsModel.getBookName() + " with book id "+bookId+" is updated ",bookDetailsModel);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }
