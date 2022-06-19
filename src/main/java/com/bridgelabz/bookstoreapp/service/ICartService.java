@@ -9,4 +9,8 @@ public interface ICartService {
     BookDetailsModel addBookToCart(String token, Long bookId);
 
     List<CartDetailsModel> getAll();
+
+    CartDetailsModel deleteCartItemById(Long cartId);
+
+    CartDetailsModel getCartItemById(Long cartId);
 }

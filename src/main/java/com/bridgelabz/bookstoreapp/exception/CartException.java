@@ -9,7 +9,7 @@ public class CartException extends RuntimeException {
     }
 
     public enum ExceptionTypes {
-        BOOK_ALREADY_PRESENT("book exists in cart");
+        BOOK_ALREADY_PRESENT("book exists in cart"), CART_ITEM_NOT_FOUND("book not present in cart");
         public String errorMessage;
         ExceptionTypes(String errorMessage) {
             this.errorMessage = errorMessage;

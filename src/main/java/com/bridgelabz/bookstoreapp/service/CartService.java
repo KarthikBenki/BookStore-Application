@@ -1,18 +1,13 @@
 package com.bridgelabz.bookstoreapp.service;
 
-import com.bridgelabz.bookstoreapp.dto.CartDTO;
 import com.bridgelabz.bookstoreapp.entity.BookDetailsModel;
 import com.bridgelabz.bookstoreapp.entity.CartDetailsModel;
 import com.bridgelabz.bookstoreapp.entity.UserData;
-import com.bridgelabz.bookstoreapp.exception.BookStoreException;
 import com.bridgelabz.bookstoreapp.exception.CartException;
-import com.bridgelabz.bookstoreapp.repository.IBookRepository;
 import com.bridgelabz.bookstoreapp.repository.ICartRepository;
-import org.apache.catalina.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.Signature;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,5 +51,22 @@ public class CartService implements ICartService {
     public List<CartDetailsModel> getAll() {
         List<CartDetailsModel> cartDetailsModelList = cartRepository.findAll();
         return cartDetailsModelList;
+    }
+
+    @Override
+    public CartDetailsModel deleteCartItemById(Long cartId) {
+        cartDetailsModel = getCartItemById(cartId);
+        cartRepository.delete(cartDetailsModel);
+        return cartDetailsModel;
+    }
+
+    @Override
+    public CartDetailsModel getCartItemById(Long cartId) {
+        Optional<CartDetailsModel> cartItemById = cartRepository.findById(cartId);
+        if(cartItemById.isPresent()){
+            return cartItemById.get();
+        }
+        throw new CartException(CartException.ExceptionTypes.CART_ITEM_NOT_FOUND);
+
     }
 }

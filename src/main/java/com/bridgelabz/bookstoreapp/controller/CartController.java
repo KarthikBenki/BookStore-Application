@@ -37,4 +37,18 @@ public class CartController {
         ResponseDTO responseDTO = new ResponseDTO("Cart details getting successfully",cartDetailsModels);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{cartId}")
+    public ResponseEntity<ResponseDTO> deleteCartItemById(@PathVariable Long cartId){
+        CartDetailsModel cartDetailsModel = cartService.deleteCartItemById(cartId);
+        ResponseDTO responseDTO = new ResponseDTO("Item Deleted successfully",cartDetailsModel);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/get/{cartId}")
+    public ResponseEntity<ResponseDTO> getCartItemById(@PathVariable Long cartId){
+        CartDetailsModel cartDetailsModel = cartService.getCartItemById(cartId);
+        ResponseDTO responseDTO = new ResponseDTO("cart item found successfully",cartDetailsModel);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }
