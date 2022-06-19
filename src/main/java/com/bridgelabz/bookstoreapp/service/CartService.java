@@ -5,6 +5,7 @@ import com.bridgelabz.bookstoreapp.entity.BookDetailsModel;
 import com.bridgelabz.bookstoreapp.entity.CartDetailsModel;
 import com.bridgelabz.bookstoreapp.entity.UserData;
 import com.bridgelabz.bookstoreapp.exception.BookStoreException;
+import com.bridgelabz.bookstoreapp.exception.CartException;
 import com.bridgelabz.bookstoreapp.repository.IBookRepository;
 import com.bridgelabz.bookstoreapp.repository.ICartRepository;
 import org.apache.catalina.Store;
@@ -40,7 +41,7 @@ public class CartService implements ICartService {
     public BookDetailsModel addBookToCart(String token, Long bookId) {
         Optional<CartDetailsModel> cartModel = cartRepository.findByBookDetailsById(bookId);
         if(cartModel.isPresent()){
-            throw new BookStoreException(BookStoreException.ExceptionTypes.BOOK_AlREADY_PRESENT);
+            throw new CartException(CartException.ExceptionTypes.BOOK_ALREADY_PRESENT);
         }
         bookDetailsModel = bookService.getBookById(bookId);
         userData = userRegistrationService.findUserById(bookDetailsModel.getUserId());
