@@ -5,7 +5,6 @@ import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Service
 public class TokenGenerator {
@@ -16,7 +15,7 @@ public class TokenGenerator {
             long currentTime = System.currentTimeMillis();
 
             return Jwts.builder()
-                    .setId(String.valueOf(userDetails.getId()))
+                    .setId(String.valueOf(userDetails.getUserId()))
                     .setSubject(userDetails.getFirstName()+userDetails.getLastName())
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(currentTime + 100000000))
@@ -27,9 +26,9 @@ public class TokenGenerator {
         public String generateVerificationToken(UserData userDetails) {
 
             long currentTime = System.currentTimeMillis();
-            System.out.println("generate token id:   " + userDetails.getId());
+            System.out.println("generate token id:   " + userDetails.getUserId());
             return Jwts.builder()
-                    .setId(String.valueOf(userDetails.getId()))
+                    .setId(String.valueOf(userDetails.getUserId()))
                     .setSubject(userDetails.getFirstName()+userDetails.getLastName())
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(currentTime +100000000))

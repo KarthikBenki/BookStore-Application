@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class UserData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
     private String firstName;
     private String lastName;
     private String kyc;
@@ -31,7 +31,7 @@ public class UserData {
     private Boolean isVerified = false;
 
     public UserData(Long id, String firstName, String lastName, String kyc, String imageURL, LocalDate dob, String email, String password, LocalDate createdDate, Boolean isVerified,String role) {
-        this.id = id;
+        this.userId = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.kyc = kyc;

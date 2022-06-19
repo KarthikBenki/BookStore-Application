@@ -4,10 +4,7 @@ import com.bridgelabz.bookstoreapp.dto.CartDTO;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Component
@@ -15,15 +12,31 @@ import javax.persistence.Id;
 public class CartDetailsModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long CartId;
-    private Long bookId;
-    private Long userId;
+
+    @ManyToOne()
+    @JoinColumn(name = "userId")
+    private  UserData userData;
+
+    @ManyToOne()
+    @JoinColumn(name = "bookId")
+    private  BookDetailsModel bookDetailsModel;
     private Double quantity;
 
-    public void update(CartDTO cartDTO) {
-        this.bookId = cartDTO.getBookId();
-        this.userId = cartDTO.getUserId();
-        this.quantity = cartDTO.getQuantity();
+    public CartDetailsModel(Long cartId, UserData userData, BookDetailsModel bookDetailsModel, Double quantity) {
+        CartId = cartId;
+        this.userData = userData;
+        this.bookDetailsModel = bookDetailsModel;
+        this.quantity = quantity;
+    }
+
+    public CartDetailsModel(UserData userData, BookDetailsModel bookDetailsModel, Double quantity) {
+        this.userData = userData;
+        this.bookDetailsModel = bookDetailsModel;
+        this.quantity = quantity;
+    }
+
+    public CartDetailsModel() {
     }
 }

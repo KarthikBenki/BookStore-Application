@@ -2,13 +2,17 @@ package com.bridgelabz.bookstoreapp.controller;
 
 import com.bridgelabz.bookstoreapp.dto.ResponseDTO;
 import com.bridgelabz.bookstoreapp.entity.BookDetailsModel;
+import com.bridgelabz.bookstoreapp.entity.CartDetailsModel;
 import com.bridgelabz.bookstoreapp.service.ICartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/cartApi")
 public class CartController {
 
@@ -24,6 +28,13 @@ public class CartController {
     public ResponseEntity<ResponseDTO> addBookToCart(@RequestHeader String token, @PathVariable Long bookId) {
         BookDetailsModel bookDetailsModel = cartService.addBookToCart(token, bookId);
         ResponseDTO responseDTO = new ResponseDTO("Book Added Successfully", bookDetailsModel);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<ResponseDTO> getAll(){
+        List<CartDetailsModel> cartDetailsModels = cartService.getAll();
+        ResponseDTO responseDTO = new ResponseDTO("Cart details getting successfully",cartDetailsModels);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }
