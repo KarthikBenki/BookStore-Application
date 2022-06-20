@@ -35,7 +35,7 @@ public class CartService implements ICartService {
     @Override
     public BookDetailsModel addBookToCart(String token, Long bookId) {
         Optional<CartDetailsModel> cartModel = cartRepository.findByBookDetailsById(bookId);
-        if(cartModel.isPresent()){
+        if (cartModel.isPresent()) {
             throw new CartException(CartException.ExceptionTypes.BOOK_ALREADY_PRESENT);
         }
         bookDetailsModel = bookService.getBookById(bookId);
@@ -43,7 +43,7 @@ public class CartService implements ICartService {
         cartDetailsModel.setBookDetailsModel(bookDetailsModel);
         cartDetailsModel.setUserData(userData);
         cartDetailsModel.setQuantity(bookDetailsModel.getQuantity());
-                cartRepository.save(cartDetailsModel);
+        cartRepository.save(cartDetailsModel);
         return bookDetailsModel;
     }
 
@@ -63,10 +63,22 @@ public class CartService implements ICartService {
     @Override
     public CartDetailsModel getCartItemById(Long cartId) {
         Optional<CartDetailsModel> cartItemById = cartRepository.findById(cartId);
-        if(cartItemById.isPresent()){
+        if (cartItemById.isPresent()) {
             return cartItemById.get();
         }
         throw new CartException(CartException.ExceptionTypes.CART_ITEM_NOT_FOUND);
 
+    }
+
+    @Override
+    public CartDetailsModel updateCartQuantityById(Long cartId, Double quantity) {
+        Optional<CartDetailsModel> detailsModel = cartRepository.findById(cartId);
+        if (detailsModel.isEmpty()) {
+            throw new CartException(CartException.ExceptionTypes.CART_ITEM_NOT_FOUND);
+        }
+        cartDetailsModel = detailsModel.get();
+        cartDetailsModel.setQuantity(quantity);
+        cartRepository.save(cartDetailsModel);
+        return cartDetailsModel;
     }
 }

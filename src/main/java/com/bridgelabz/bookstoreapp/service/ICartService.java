@@ -13,4 +13,6 @@ public interface ICartService {
     CartDetailsModel deleteCartItemById(Long cartId);
 
     CartDetailsModel getCartItemById(Long cartId);
+
+    CartDetailsModel updateCartQuantityById(Long cartId, Double quantity);
 }

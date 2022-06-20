@@ -51,4 +51,11 @@ public class CartController {
         ResponseDTO responseDTO = new ResponseDTO("cart item found successfully",cartDetailsModel);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @PutMapping("/updateQuantity/{cartId}/{quantity}")
+    public ResponseEntity<ResponseDTO> updateCartQuantityById(@PathVariable Long cartId,@PathVariable Double quantity){
+         CartDetailsModel cartDetailsModel = cartService.updateCartQuantityById(cartId,quantity);
+         ResponseDTO responseDTO = new ResponseDTO("cart quantity updated successfully",cartDetailsModel);
+         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }
