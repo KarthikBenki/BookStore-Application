@@ -101,6 +101,9 @@ public class UserRegistrationService implements IUserRegistrationService {
 //        userData = userRegistrationRepository.findUserDataByEmail(userLoginDTO.getEmail());
         userData = userRegistrationRepository.findUserDataByEmailId(userLoginDTO.getEmail())
                         .orElseThrow(()-> new UserException("Enter registered Email, Email not found", UserException.ExceptionType.EMAIL_NOT_FOUND));
+        if(!userData.getRole().equals(userLoginDTO.getRole())){
+            throw new UserException("Unauthorised user",UserException.ExceptionType.USER_UNAUTHORISED);
+        }
         System.out.println(userData);
 
 //        if (userData.equals(null)) {
