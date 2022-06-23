@@ -8,6 +8,7 @@ public class UserException extends RuntimeException {
         ALREADY_VERIFIED,
         INVALID_DATA,
         USER_NOT_FOUND,
+        OTP_INVALID,
 
         USER_UNAUTHORISED
     }

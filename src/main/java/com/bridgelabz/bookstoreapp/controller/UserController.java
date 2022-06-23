@@ -99,7 +99,7 @@ public class UserController {
      * @param otp
      * @return returns the data if otp is verified
      */
-    @GetMapping("/verify/email/{otp}")
+    @PutMapping("/verify/email/{otp}")
     public ResponseEntity<ResponseDTO> verifyEmailUsingOtp(@PathVariable Long otp) {
         ResponseDTO responseDTO = userRegistrationService.verifyEmailUsingOtp(otp);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);

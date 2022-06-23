@@ -40,10 +40,11 @@ public class CartService implements ICartService {
         }
         bookDetailsModel = bookService.getBookById(bookId);
         userData = userRegistrationService.findUserById(bookDetailsModel.getUserId());
-        cartDetailsModel.setBookDetailsModel(bookDetailsModel);
-        cartDetailsModel.setUserData(userData);
-        cartDetailsModel.setQuantity(1.0);
-        cartRepository.save(cartDetailsModel);
+        CartDetailsModel detailsModel = new CartDetailsModel();
+        detailsModel.setBookDetailsModel(bookDetailsModel);
+        detailsModel.setUserData(userData);
+        detailsModel.setQuantity(1.0);
+        cartRepository.save(detailsModel);
         return bookDetailsModel;
     }
 

@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
 
 @Service
 public class UserRegistrationService implements IUserRegistrationService {
@@ -29,8 +28,7 @@ public class UserRegistrationService implements IUserRegistrationService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private ModelMapper modelMapper;
+
 
     @Autowired
     private OtpGenerator otpGenerator;
@@ -135,9 +133,9 @@ public class UserRegistrationService implements IUserRegistrationService {
             userRegistrationRepository.save(userData);
             return new ResponseDTO("otp verified", userData);
         } else if (userData.getIsVerified() && mailOtp.equals(otp)) {
-            return new ResponseDTO("otp already verified no need to verify again", userData);
+            throw new UserException("otp already verified no need to verify again", UserException.ExceptionType.OTP_INVALID);
         }
-        return new ResponseDTO("Invalid otp", "please enter correct otp");
+        throw new UserException("Invalid otp", UserException.ExceptionType.OTP_INVALID);
     }
 
     /**
