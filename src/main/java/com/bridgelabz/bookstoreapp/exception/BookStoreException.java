@@ -18,7 +18,8 @@ public BookStoreException(ExceptionTypes exceptionTypes){
         BOOK_AlREADY_PRESENT("book is already added in database"),
         BOOK_NOT_FOUND("book is not found"),
         CART_NOT_PRESENT("invalid cart id"),
-        NO_BOOKS_FOUND("no books available");
+        NO_BOOKS_FOUND("no books available"),
+        BOOK_OR_USER_DOES_NOT_EXIST("Book or user does not exist");
 
         public String errorMsg;
 
