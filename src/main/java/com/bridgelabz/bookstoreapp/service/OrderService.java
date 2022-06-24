@@ -30,7 +30,9 @@ public class OrderService implements IOrderService{
 
     @Override
     public OrderDetailsModel placeOrder(OrderDTO orderDTO) {
+        log.info(orderDTO.toString());
         Optional<BookDetailsModel> book = bookRepository.findById(orderDTO.getBookId());
+
         Optional<UserData> user = userRepository.findById(orderDTO.getUserId());
         if(book.isPresent()&&user.isPresent()) {
             if(orderDTO.getQuantity()<=book.get().getQuantity()){

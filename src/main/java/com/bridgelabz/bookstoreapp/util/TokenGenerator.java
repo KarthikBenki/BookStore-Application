@@ -11,6 +11,7 @@ public class TokenGenerator {
 
 
         public String generateLoginToken(UserData userDetails) {
+            System.out.println("generate token id:   " + userDetails.getUserId());
 
             long currentTime = System.currentTimeMillis();
 
@@ -38,12 +39,13 @@ public class TokenGenerator {
 
 //        public UUID decodeJWT(String jwt) throws JwtException {
         public String decodeJWT(String jwt) throws JwtException {
+            System.out.println(jwt);
             try {
                 Claims claims = Jwts.parser()
                         .setSigningKey("sd5745FAHFW").parseClaimsJws(jwt).getBody();
+                System.out.println(claims);
 
                 System.out.println("jwt id: " + claims.getId());
-//                return UUID.fromString(claims.getId());
                 return claims.getId();
             } catch (ExpiredJwtException e) {
                 throw new JwtException("session time out");

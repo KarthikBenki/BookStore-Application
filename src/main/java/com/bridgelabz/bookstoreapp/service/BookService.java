@@ -8,6 +8,7 @@ import com.bridgelabz.bookstoreapp.exception.UserException;
 import com.bridgelabz.bookstoreapp.repository.IBookRepository;
 import com.bridgelabz.bookstoreapp.repository.UserRegistrationRepository;
 import com.bridgelabz.bookstoreapp.util.TokenGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class BookService implements IBookService {
 
@@ -38,6 +40,7 @@ public class BookService implements IBookService {
     @Override
     public BookDetailsModel addBook(BookDTO bookDTO, String token) {
         Long id = Long.valueOf(tokenGenerator.decodeJWT(token));
+        System.out.println("the user id is "+id);
         UserData userData = userRegistrationRepository.findById(id)
                 .orElseThrow(() -> new UserException("User not found", UserException.ExceptionType.USER_NOT_FOUND));
         String userRole = userData.getRole();
